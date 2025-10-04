@@ -1,33 +1,50 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import React from 'react'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+import { AuthProvider } from './contexts/AuthContext'
+import Navbar from './components/Layout/Navbar'
+import Home from './pages/Home'
+import Login from './pages/Auth/Login'
+import Register from './pages/Auth/Register'
+import Dashboard from './pages/Dashboard/Dashboard'
+import Voting from './pages/Voting/Voting'
+import Results from './pages/Results/Results'
+import Profile from './pages/Profile/Profile'
+import ProtectedRoute from './components/Routes/ProtectedRoute'
 import './App.css'
 
 function App() {
-  
   return (
-    <>
-      <div className="App">
-      <header className="App-header">
-        <h1>E-Voting System</h1>
-        <p>Secure Electronic Voting Platform</p>
-        <div className="features">
-          <div className="feature-card">
-            <h3>🗳️ Secure Voting</h3>
-            <p>Cast your vote securely with blockchain technology</p>
-          </div>
-          <div className="feature-card">
-            <h3>📊 Real-time Results</h3>
-            <p>View election results in real-time</p>
-          </div>
-          <div className="feature-card">
-            <h3>🔒 Privacy Protected</h3>
-            <p>Your vote remains anonymous and secure</p>
-          </div>
+    <AuthProvider>
+      <Router>
+        <div className="App">
+          <Navbar />
+          <main className="main-content">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/dashboard" element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              } />
+              <Route path="/vote" element={
+                <ProtectedRoute>
+                  <Voting />
+                </ProtectedRoute>
+              } />
+              <Route path="/results" element={<Results />} />
+              <Route path="/profile" element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              } />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </main>
         </div>
-      </header>
-    </div>
-    </>
+      </Router>
+    </AuthProvider>
   )
 }
 

@@ -12,25 +12,25 @@ class AuthService {
 
   // Login user
   async login(voterId, password) {
-    const response = await api.post('/auth/login', { voterId, password });
+    const response = await api.post('/api/auth/login', { voterId, password });
     return response.data;
   }
 
   // Register new user
   async register(userData) {
-    const response = await api.post('/auth/register', userData);
+    const response = await api.post('/api/auth/register', userData);
     return response.data;
   }
 
   // Get user profile
   async getProfile() {
-    const response = await api.get('/auth/profile');
+    const response = await api.get('/api/auth/profile');
     return response.data.data.voter;
   }
 
   // Logout user
   async logout() {
-    const response = await api.post('/auth/logout');
+    const response = await api.post('/api/auth/logout');
     return response.data;
   }
 }

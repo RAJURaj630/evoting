@@ -1,74 +1,56 @@
-import React, { useContext } from 'react';
-import { Navbar as BSNavbar, Nav, Container, Button } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
-import { AuthContext } from '../../contexts/AuthContext';
+import React from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { useAuth } from '../../contexts/AuthContext'
 
 const Navbar = () => {
-  const { user, logout } = useContext(AuthContext);
+  const { user, logout, isAuthenticated } = useAuth()
+  const navigate = useNavigate()
 
-  const handleLogout = () => {
-    logout();
-  };
+  const handleLogout = async () => {
+    await logout()
+    navigate('/')
+  }
 
   return (
-    <BSNavbar bg="primary" variant="dark" expand="lg" className="shadow">
-      <Container>
-        <LinkContainer to="/">
-          <BSNavbar.Brand>
-            <i className="fas fa-vote-yea me-2"></i>
-            E-Voting System
-          </BSNavbar.Brand>
-        </LinkContainer>
+    <nav className="navbar">
+      <div className="navbar-container">
+        <Link to="/" className="navbar-brand">
+          🗳️ E-Voting System
+        </Link>
         
-        <BSNavbar.Toggle aria-controls="basic-navbar-nav" />
-        <BSNavbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            {user && (
+        <div className="navbar-menu">
+          <div className="navbar-nav">
+            {isAuthenticated && (
               <>
-                <LinkContainer to="/dashboard">
-                  <Nav.Link>Dashboard</Nav.Link>
-                </LinkContainer>
-                <LinkContainer to="/vote">
-                  <Nav.Link>Vote</Nav.Link>
-                </LinkContainer>
-                <LinkContainer to="/profile">
-                  <Nav.Link>Profile</Nav.Link>
-                </LinkContainer>
+                <Link to="/dashboard" className="nav-link">Dashboard</Link>
+                <Link to="/vote" className="nav-link">Vote</Link>
+                <Link to="/profile" className="nav-link">Profile</Link>
               </>
             )}
-            <LinkContainer to="/results">
-              <Nav.Link>Results</Nav.Link>
-            </LinkContainer>
-          </Nav>
+            <Link to="/results" className="nav-link">Results</Link>
+          </div>
           
-          <Nav>
-            {user ? (
+          <div className="navbar-auth">
+            {isAuthenticated ? (
               <>
-                <Nav.Item className="d-flex align-items-center me-3">
-                  <span className="text-light">
-                    Welcome, {user.name}
-                  </span>
-                </Nav.Item>
-                <Button variant="outline-light" size="sm" onClick={handleLogout}>
-                  <i className="fas fa-sign-out-alt me-1"></i>
+                <span className="welcome-text">
+                  Welcome, {user?.name}
+                </span>
+                <button className="btn btn-outline" onClick={handleLogout}>
                   Logout
-                </Button>
+                </button>
               </>
             ) : (
               <>
-                <LinkContainer to="/login">
-                  <Nav.Link>Login</Nav.Link>
-                </LinkContainer>
-                <LinkContainer to="/register">
-                  <Nav.Link>Register</Nav.Link>
-                </LinkContainer>
+                <Link to="/login" className="nav-link">Login</Link>
+                <Link to="/register" className="btn btn-primary">Register</Link>
               </>
             )}
-          </Nav>
-        </BSNavbar.Collapse>
-      </Container>
-    </BSNavbar>
-  );
-};
+          </div>
+        </div>
+      </div>
+    </nav>
+  )
+}
 
-export default Navbar;
+export default Navbar

@@ -1,122 +1,118 @@
-import React, { useState, useContext } from 'react';
-import { Container, Row, Col, Card, Form, Button, Alert } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../../contexts/AuthContext';
-import { toast } from 'react-toastify';
+import React, { useState } from 'react'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { useAuth } from '../../contexts/AuthContext'
 
 const Login = () => {
   const [formData, setFormData] = useState({
     voterId: '',
     password: ''
-  });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  })
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
-  const { login } = useContext(AuthContext);
-  const navigate = useNavigate();
+  const { login } = useAuth()
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  const from = location.state?.from?.pathname || '/dashboard'
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
-    });
-  };
+    })
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
+    e.preventDefault()
+    setLoading(true)
+    setError('')
 
     try {
-      const result = await login(formData.voterId, formData.password);
+      const result = await login(formData.voterId, formData.password)
       if (result.success) {
-        toast.success('Login successful!');
-        navigate('/dashboard');
+        navigate(from, { replace: true })
       } else {
-        setError(result.message || 'Login failed');
+        setError(result.message || 'Login failed')
       }
     } catch (error) {
-      setError('Login failed. Please try again.');
+      setError('Login failed. Please try again.')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
-    <div className="voting-container">
-      <Container>
-        <Row className="justify-content-center">
-          <Col md={6} lg={4}>
-            <Card className="shadow">
-              <Card.Body className="p-4">
-                <div className="text-center mb-4">
-                  <i className="fas fa-user-circle fa-3x text-primary mb-3"></i>
-                  <h3>Voter Login</h3>
-                  <p className="text-muted">Enter your credentials to vote</p>
-                </div>
+    <div className="auth-container">
+      <div className="auth-card">
+        <div className="auth-header">
+          <div className="auth-icon">👤</div>
+          <h2>Voter Login</h2>
+          <p>Enter your credentials to access the voting system</p>
+        </div>
 
-                {error && <Alert variant="danger">{error}</Alert>}
+        {error && (
+          <div className="alert alert-error">
+            {error}
+          </div>
+        )}
 
-                <Form onSubmit={handleSubmit}>
-                  <Form.Group className="mb-3">
-                    <Form.Label>Voter ID</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="voterId"
-                      value={formData.voterId}
-                      onChange={handleChange}
-                      placeholder="Enter your Voter ID"
-                      required
-                    />
-                  </Form.Group>
+        <form onSubmit={handleSubmit} className="auth-form">
+          <div className="form-group">
+            <label htmlFor="voterId">Voter ID</label>
+            <input
+              type="text"
+              id="voterId"
+              name="voterId"
+              value={formData.voterId}
+              onChange={handleChange}
+              placeholder="Enter your Voter ID"
+              required
+              className="form-input"
+            />
+          </div>
 
-                  <Form.Group className="mb-4">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control
-                      type="password"
-                      name="password"
-                      value={formData.password}
-                      onChange={handleChange}
-                      placeholder="Enter your password"
-                      required
-                    />
-                  </Form.Group>
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="Enter your password"
+              required
+              className="form-input"
+            />
+          </div>
 
-                  <Button
-                    variant="primary"
-                    type="submit"
-                    className="w-100 mb-3"
-                    disabled={loading}
-                  >
-                    {loading ? (
-                      <>
-                        <span className="spinner-border spinner-border-sm me-2" role="status"></span>
-                        Logging in...
-                      </>
-                    ) : (
-                      <>
-                        <i className="fas fa-sign-in-alt me-2"></i>
-                        Login
-                      </>
-                    )}
-                  </Button>
-                </Form>
+          <button
+            type="submit"
+            className="btn btn-primary btn-full"
+            disabled={loading}
+          >
+            {loading ? (
+              <>
+                <span className="spinner"></span>
+                Logging in...
+              </>
+            ) : (
+              'Login'
+            )}
+          </button>
+        </form>
 
-                <div className="text-center">
-                  <p className="mb-0">
-                    Don't have an account?{' '}
-                    <Link to="/register" className="text-primary">
-                      Register here
-                    </Link>
-                  </p>
-                </div>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
+        <div className="auth-footer">
+          <p>
+            Don't have an account?{' '}
+            <Link to="/register" className="auth-link">
+              Register here
+            </Link>
+          </p>
+        </div>
+      </div>
     </div>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

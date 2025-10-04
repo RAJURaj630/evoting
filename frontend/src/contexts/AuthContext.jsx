@@ -10,34 +10,27 @@ export const useAuth = () => {
   }
   return context;
 };
-
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    // Check for stored token on app load
+    // Check for stored token and user on app load
     const token = localStorage.getItem('evoting_token');
-    if (token) {
+    const storedUser = localStorage.getItem('evoting_user');
+    
+    if (token && storedUser) {
       authService.setToken(token);
-      fetchUserProfile();
-    } else {
-      setLoading(false);
+      setUser(JSON.parse(storedUser));
+      setIsAuthenticated(true);
     }
+    setLoading(false);
   }, []);
 
   const fetchUserProfile = async () => {
-    try {
-      const userData = await authService.getProfile();
-      setUser(userData);
-      setIsAuthenticated(true);
-    } catch (error) {
-      console.error('Failed to fetch user profile:', error);
-      logout();
-    } finally {
-      setLoading(false);
-    }
+    // Profile fetching not needed for mock backend
+    setLoading(false);
   };
 
   const login = async (voterId, password) => {
@@ -48,6 +41,7 @@ export const AuthProvider = ({ children }) => {
       if (response.success) {
         const { voter, token } = response.data;
         localStorage.setItem('evoting_token', token);
+        localStorage.setItem('evoting_user', JSON.stringify(voter));
         authService.setToken(token);
         
         setUser(voter);
@@ -72,6 +66,7 @@ export const AuthProvider = ({ children }) => {
       if (response.success) {
         const { voter, token } = response.data;
         localStorage.setItem('evoting_token', token);
+        localStorage.setItem('evoting_user', JSON.stringify(voter));
         authService.setToken(token);
         
         setUser(voter);
@@ -95,6 +90,7 @@ export const AuthProvider = ({ children }) => {
       console.error('Logout error:', error);
     } finally {
       localStorage.removeItem('evoting_token');
+      localStorage.removeItem('evoting_user');
       authService.setToken(null);
       setUser(null);
       setIsAuthenticated(false);

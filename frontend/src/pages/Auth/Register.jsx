@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
-import { Container, Row, Col, Card, Form, Button, Alert } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { useAuth } from '../../contexts/AuthContext'
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -10,180 +9,172 @@ const Register = () => {
     email: '',
     password: '',
     confirmPassword: ''
-  });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  })
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
-  const navigate = useNavigate();
+  const { register } = useAuth()
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
-    });
-  };
+    })
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
+    e.preventDefault()
+    setLoading(true)
+    setError('')
 
     if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
-      setLoading(false);
-      return;
+      setError('Passwords do not match')
+      setLoading(false)
+      return
+    }
+
+    if (formData.password.length < 6) {
+      setError('Password must be at least 6 characters long')
+      setLoading(false)
+      return
     }
 
     try {
-      const response = await fetch('http://localhost:5001/api/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          voterId: formData.voterId,
-          name: formData.name,
-          email: formData.email,
-          password: formData.password
-        }),
-      });
+      const result = await register({
+        voterId: formData.voterId,
+        name: formData.name,
+        email: formData.email,
+        password: formData.password
+      })
 
-      const data = await response.json();
-
-      if (data.success) {
-        toast.success('Registration successful! Please login.');
-        navigate('/login');
+      if (result.success) {
+        navigate('/dashboard')
       } else {
-        setError(data.message || 'Registration failed');
+        setError(result.message || 'Registration failed')
       }
     } catch (error) {
-      setError('Registration failed. Please try again.');
+      setError('Registration failed. Please try again.')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
-    <div className="voting-container">
-      <Container>
-        <Row className="justify-content-center">
-          <Col md={8} lg={6}>
-            <Card className="shadow">
-              <Card.Body className="p-4">
-                <div className="text-center mb-4">
-                  <i className="fas fa-user-plus fa-3x text-primary mb-3"></i>
-                  <h3>Voter Registration</h3>
-                  <p className="text-muted">Create your account to participate in voting</p>
-                </div>
+    <div className="auth-container">
+      <div className="auth-card auth-card-wide">
+        <div className="auth-header">
+          <div className="auth-icon">📝</div>
+          <h2>Voter Registration</h2>
+          <p>Create your account to participate in voting</p>
+        </div>
 
-                {error && <Alert variant="danger">{error}</Alert>}
+        {error && (
+          <div className="alert alert-error">
+            {error}
+          </div>
+        )}
 
-                <Form onSubmit={handleSubmit}>
-                  <Row>
-                    <Col md={6}>
-                      <Form.Group className="mb-3">
-                        <Form.Label>Voter ID</Form.Label>
-                        <Form.Control
-                          type="text"
-                          name="voterId"
-                          value={formData.voterId}
-                          onChange={handleChange}
-                          placeholder="Enter your Voter ID"
-                          required
-                        />
-                      </Form.Group>
-                    </Col>
-                    <Col md={6}>
-                      <Form.Group className="mb-3">
-                        <Form.Label>Full Name</Form.Label>
-                        <Form.Control
-                          type="text"
-                          name="name"
-                          value={formData.name}
-                          onChange={handleChange}
-                          placeholder="Enter your full name"
-                          required
-                        />
-                      </Form.Group>
-                    </Col>
-                  </Row>
+        <form onSubmit={handleSubmit} className="auth-form">
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="voterId">Voter ID</label>
+              <input
+                type="text"
+                id="voterId"
+                name="voterId"
+                value={formData.voterId}
+                onChange={handleChange}
+                placeholder="Enter your Voter ID"
+                required
+                className="form-input"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="name">Full Name</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Enter your full name"
+                required
+                className="form-input"
+              />
+            </div>
+          </div>
 
-                  <Form.Group className="mb-3">
-                    <Form.Label>Email Address</Form.Label>
-                    <Form.Control
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      placeholder="Enter your email"
-                      required
-                    />
-                  </Form.Group>
+          <div className="form-group">
+            <label htmlFor="email">Email Address</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Enter your email"
+              required
+              className="form-input"
+            />
+          </div>
 
-                  <Row>
-                    <Col md={6}>
-                      <Form.Group className="mb-3">
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control
-                          type="password"
-                          name="password"
-                          value={formData.password}
-                          onChange={handleChange}
-                          placeholder="Create a password"
-                          required
-                        />
-                      </Form.Group>
-                    </Col>
-                    <Col md={6}>
-                      <Form.Group className="mb-4">
-                        <Form.Label>Confirm Password</Form.Label>
-                        <Form.Control
-                          type="password"
-                          name="confirmPassword"
-                          value={formData.confirmPassword}
-                          onChange={handleChange}
-                          placeholder="Confirm your password"
-                          required
-                        />
-                      </Form.Group>
-                    </Col>
-                  </Row>
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Create a password"
+                required
+                className="form-input"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="confirmPassword">Confirm Password</label>
+              <input
+                type="password"
+                id="confirmPassword"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                placeholder="Confirm your password"
+                required
+                className="form-input"
+              />
+            </div>
+          </div>
 
-                  <Button
-                    variant="primary"
-                    type="submit"
-                    className="w-100 mb-3"
-                    disabled={loading}
-                  >
-                    {loading ? (
-                      <>
-                        <span className="spinner-border spinner-border-sm me-2" role="status"></span>
-                        Registering...
-                      </>
-                    ) : (
-                      <>
-                        <i className="fas fa-user-plus me-2"></i>
-                        Register
-                      </>
-                    )}
-                  </Button>
-                </Form>
+          <button
+            type="submit"
+            className="btn btn-primary btn-full"
+            disabled={loading}
+          >
+            {loading ? (
+              <>
+                <span className="spinner"></span>
+                Registering...
+              </>
+            ) : (
+              'Register'
+            )}
+          </button>
+        </form>
 
-                <div className="text-center">
-                  <p className="mb-0">
-                    Already have an account?{' '}
-                    <Link to="/login" className="text-primary">
-                      Login here
-                    </Link>
-                  </p>
-                </div>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
+        <div className="auth-footer">
+          <p>
+            Already have an account?{' '}
+            <Link to="/login" className="auth-link">
+              Login here
+            </Link>
+          </p>
+        </div>
+      </div>
     </div>
-  );
-};
+  )
+}
 
-export default Register;
+export default Register
