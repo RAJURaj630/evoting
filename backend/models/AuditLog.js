@@ -1,3 +1,4 @@
+
 const mongoose = require('mongoose');
 
 const auditLogSchema = new mongoose.Schema({
@@ -7,11 +8,18 @@ const auditLogSchema = new mongoose.Schema({
     enum: [
       'LOGIN',
       'LOGOUT',
+      'REGISTRATION_ATTEMPT',
+      'REGISTRATION_SUCCESS',
+      'REGISTRATION_FAILED',
+      'OTP_SENT',
+      'OTP_VERIFIED',
+      'OTP_FAILED',
       'VOTE_CAST',
       'VOTE_VIEW',
       'CANDIDATE_VIEW',
       'RESULTS_VIEW',
       'PROFILE_UPDATE',
+      'ADMIN_ACTION',
       'SYSTEM_ERROR'
     ]
   },
@@ -19,7 +27,7 @@ const auditLogSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Voter',
     required: function() {
-      return this.action !== 'SYSTEM_ERROR';
+      return !['SYSTEM_ERROR', 'REGISTRATION_ATTEMPT', 'REGISTRATION_FAILED'].includes(this.action);
     }
   },
   userAgent: {

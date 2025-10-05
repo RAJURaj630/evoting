@@ -1,0 +1,355 @@
+.enhanced-register {
+  min-height: 100vh;
+  padding: 2rem 1rem;
+}
+
+/* Step Indicator */
+.step-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2rem 0;
+  padding: 0 2rem;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.step-number {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #e0e0e0;
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  border: 3px solid transparent;
+}
+
+.step.active .step-number {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-color: #667eea;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.step.completed .step-number {
+  background: #10b981;
+  color: white;
+}
+
+.step.completed .step-number::after {
+  content: '✓';
+  font-size: 1.5rem;
+}
+
+.step-label {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: #666;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.step.active .step-label {
+  color: #667eea;
+  font-weight: 600;
+}
+
+.step-line {
+  width: 100px;
+  height: 3px;
+  background: #e0e0e0;
+  margin: 0 1rem;
+}
+
+.step.completed ~ .step-line {
+  background: #10b981;
+}
+
+/* Form Sections */
+.form-section {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border-left: 4px solid #667eea;
+}
+
+.form-section h3 {
+  margin: 0 0 1rem 0;
+  color: #333;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.form-hint {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+/* Biometric Section */
+.biometric-section {
+  text-align: center;
+  padding: 2rem;
+}
+
+.biometric-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.biometric-section h3 {
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.biometric-section > p {
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+.biometric-info {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.info-item .icon {
+  font-size: 2rem;
+}
+
+.info-item span:last-child {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.camera-placeholder {
+  margin: 2rem auto;
+  max-width: 500px;
+}
+
+.camera-frame {
+  background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%);
+  border: 3px dashed #667eea;
+  border-radius: 12px;
+  padding: 3rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.camera-frame p {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.camera-frame small {
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.scan-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #667eea, transparent);
+  animation: scan 2s linear infinite;
+}
+
+@keyframes scan {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(300px);
+  }
+}
+
+.instructions {
+  text-align: left;
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 12px;
+}
+
+.instructions h4 {
+  margin: 0 0 1rem 0;
+  color: #333;
+}
+
+.instructions ul {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.instructions li {
+  margin-bottom: 0.5rem;
+  color: #666;
+}
+
+/* Device Section */
+.device-section {
+  text-align: center;
+  padding: 2rem;
+}
+
+.device-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.device-section h3 {
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.device-section > p {
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+.device-info-box {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+  text-align: left;
+}
+
+.device-info-box h4 {
+  margin: 0 0 1rem 0;
+  color: #333;
+}
+
+.device-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem;
+  background: white;
+  border-radius: 6px;
+}
+
+.detail-item strong {
+  color: #667eea;
+}
+
+.detail-item span {
+  color: #666;
+}
+
+.security-features {
+  text-align: left;
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #10b98120 0%, #059b6920 100%);
+  border-radius: 12px;
+  border-left: 4px solid #10b981;
+}
+
+.security-features h4 {
+  margin: 0 0 1rem 0;
+  color: #333;
+}
+
+.security-features ul {
+  margin: 0;
+  padding-left: 1.5rem;
+  list-style: none;
+}
+
+.security-features li {
+  margin-bottom: 0.5rem;
+  color: #666;
+}
+
+/* Button Group */
+.button-group {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.button-group .btn {
+  flex: 1;
+}
+
+/* Alerts */
+.alert-success {
+  background: linear-gradient(135deg, #10b98120 0%, #059b6920 100%);
+  border-left: 4px solid #10b981;
+  color: #059669;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+
+.security-note {
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: #10b981;
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .step-indicator {
+    padding: 0 1rem;
+  }
+
+  .step-line {
+    width: 50px;
+  }
+
+  .step-label {
+    font-size: 0.75rem;
+  }
+
+  .step-number {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+
+  .biometric-info {
+    gap: 1rem;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+
+  .form-section {
+    padding: 1rem;
+  }
+}

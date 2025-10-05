@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 import voteService from '../../services/voteService'
+import enhancedVoteService from '../../services/enhancedVoteService'
+import enhancedAuthService from '../../services/enhancedAuthService'
+import VVPATReceipt from '../../components/VVPATReceipt/VVPATReceipt'
 
 const Voting = () => {
   const { user } = useAuth()
@@ -13,6 +16,9 @@ const Voting = () => {
   const [hasVoted, setHasVoted] = useState(user?.hasVoted || false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
+  const [vvpatReceipt, setVvpatReceipt] = useState(null)
+  const [showReceipt, setShowReceipt] = useState(false)
+  const [useEnhancedMode, setUseEnhancedMode] = useState(true)
 
   useEffect(() => {
     fetchCandidates()
@@ -45,21 +51,46 @@ const Voting = () => {
     setVoting(true)
     setError('')
     try {
-      const response = await voteService.castVote(selectedCandidate)
-      if (response.success) {
-        setSuccess('Vote cast successfully!')
-        setHasVoted(true)
-        setTimeout(() => {
-          navigate('/results')
-        }, 2000)
+      let response
+      
+      if (useEnhancedMode) {
+        // Use enhanced v2 API with blockchain and VVPAT
+        const deviceInfo = enhancedAuthService.getDeviceFingerprint()
+        response = await enhancedVoteService.castVote(selectedCandidate, deviceInfo.deviceId)
+        
+        if (response.success && response.data.vvpatReceipt) {
+          setVvpatReceipt(response.data.vvpatReceipt)
+          setShowReceipt(true)
+          setSuccess('✅ Vote cast successfully with blockchain & VVPAT!')
+          setHasVoted(true)
+        } else {
+          setError(response.message || 'Failed to cast vote')
+        }
       } else {
-        setError(response.message || 'Failed to cast vote')
+        // Use legacy v1 API
+        response = await voteService.castVote(selectedCandidate)
+        if (response.success) {
+          setSuccess('Vote cast successfully!')
+          setHasVoted(true)
+          setTimeout(() => {
+            navigate('/results')
+          }, 2000)
+        } else {
+          setError(response.message || 'Failed to cast vote')
+        }
       }
     } catch (error) {
-      setError('Failed to cast vote')
+      setError(error.response?.data?.message || 'Failed to cast vote')
     } finally {
       setVoting(false)
     }
+  }
+
+  const handleCloseReceipt = () => {
+    setShowReceipt(false)
+    setTimeout(() => {
+      navigate('/results')
+    }, 500)
   }
 
   if (loading) {
@@ -96,10 +127,24 @@ const Voting = () => {
       <div className="container">
         <div className="voting-card">
           <div className="voting-header">
-            <h2>🗳️ Cast Your Vote</h2>
+            <div className="header-top">
+              <h2>🗳️ Cast Your Vote</h2>
+              <div className="mode-toggle">
+                <label className="toggle-label">
+                  <input
+                    type="checkbox"
+                    checked={useEnhancedMode}
+                    onChange={(e) => setUseEnhancedMode(e.target.checked)}
+                  />
+                  <span className="toggle-text">
+                    {useEnhancedMode ? '🔐 Enhanced Mode (Blockchain + VVPAT)' : '📝 Standard Mode'}
+                  </span>
+                </label>
+              </div>
+            </div>
             <div className="alert alert-info">
               <strong>Important:</strong> You can only vote once. Your vote is anonymous and encrypted.
-              Please review your selection carefully before submitting.
+              {useEnhancedMode && ' You will receive a VVPAT receipt for verification.'}
             </div>
           </div>
 
@@ -146,15 +191,20 @@ const Voting = () => {
               {voting ? (
                 <>
                   <span className="spinner"></span>
-                  Casting Vote...
+                  {useEnhancedMode ? 'Recording on Blockchain...' : 'Casting Vote...'}
                 </>
               ) : (
-                'Cast Vote'
+                useEnhancedMode ? '🔐 Cast Vote (Blockchain + VVPAT)' : 'Cast Vote'
               )}
             </button>
           </div>
         </div>
       </div>
+
+      {/* VVPAT Receipt Modal */}
+      {showReceipt && vvpatReceipt && (
+        <VVPATReceipt receipt={vvpatReceipt} onClose={handleCloseReceipt} />
+      )}
     </div>
   )
 }

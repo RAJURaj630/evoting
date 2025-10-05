@@ -28,10 +28,13 @@ const Home = () => {
               </>
             ) : (
               <>
-                <Link to="/register" className="btn btn-primary btn-large">
-                  Register to Vote
+                <Link to="/register-enhanced" className="btn btn-primary btn-large">
+                  🔐 Enhanced Registration
                 </Link>
-                <Link to="/login" className="btn btn-secondary btn-large">
+                <Link to="/register" className="btn btn-secondary btn-large">
+                  Standard Registration
+                </Link>
+                <Link to="/login" className="btn btn-outline btn-large">
                   Login
                 </Link>
               </>
@@ -42,38 +45,43 @@ const Home = () => {
 
       <div className="features-section">
         <div className="container">
-          <h2 className="section-title">Why Choose Our E-Voting System?</h2>
+          <h2 className="section-title">🚀 Enhanced Security Features</h2>
           <div className="features-grid">
-            <div className="feature-card">
-              <div className="feature-icon">🗳️</div>
-              <h3>Secure Voting</h3>
-              <p>Cast your vote securely with advanced encryption technology</p>
+            <div className="feature-card enhanced">
+              <div className="feature-icon">🆔</div>
+              <h3>Aadhaar Verification</h3>
+              <p>Secure voter verification using Aadhaar with Verhoeff algorithm</p>
             </div>
-            <div className="feature-card">
-              <div className="feature-icon">📊</div>
-              <h3>Real-time Results</h3>
-              <p>View election results in real-time as votes are counted</p>
+            <div className="feature-card enhanced">
+              <div className="feature-icon">👤</div>
+              <h3>AI Biometrics</h3>
+              <p>Liveness detection and face matching for enhanced security</p>
             </div>
-            <div className="feature-card">
-              <div className="feature-icon">🔒</div>
-              <h3>Privacy Protected</h3>
-              <p>Your vote remains anonymous and secure throughout the process</p>
+            <div className="feature-card enhanced">
+              <div className="feature-icon">🔗</div>
+              <h3>Blockchain Storage</h3>
+              <p>Immutable vote recording with SHA-256 proof of work</p>
             </div>
-            <div className="feature-card">
-              <div className="feature-icon">✅</div>
-              <h3>Verified Identity</h3>
-              <p>Secure voter authentication ensures election integrity</p>
+            <div className="feature-card enhanced">
+              <div className="feature-icon">🎫</div>
+              <h3>VVPAT Receipt</h3>
+              <p>Digital audit trail with QR code and cryptographic signature</p>
             </div>
-            <div className="feature-card">
+            <div className="feature-card enhanced">
               <div className="feature-icon">📱</div>
-              <h3>Easy Access</h3>
-              <p>Vote from anywhere with our user-friendly interface</p>
+              <h3>Device Binding</h3>
+              <p>Secure device fingerprinting prevents unauthorized access</p>
             </div>
-            <div className="feature-card">
-              <div className="feature-icon">🔍</div>
-              <h3>Transparent</h3>
-              <p>Full audit trail for complete transparency and accountability</p>
+            <div className="feature-card enhanced">
+              <div className="feature-icon">🌐</div>
+              <h3>Multi-Language</h3>
+              <p>Support for 10 Indian languages with WCAG 2.0 AA compliance</p>
             </div>
+          </div>
+          
+          <div className="enhanced-badge">
+            <span className="badge-icon">✨</span>
+            <span className="badge-text">All features follow international standards for secure electronic voting</span>
           </div>
         </div>
       </div>

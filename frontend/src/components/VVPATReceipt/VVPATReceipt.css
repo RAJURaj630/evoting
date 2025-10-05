@@ -1,0 +1,342 @@
+.vvpat-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.vvpat-modal {
+  background: white;
+  border-radius: 16px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.vvpat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.vvpat-header h2 {
+  margin: 0;
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #666;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.close-button:hover {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.vvpat-content {
+  padding: 2rem;
+}
+
+.receipt-paper {
+  background: linear-gradient(to bottom, #ffffff 0%, #f9f9f9 100%);
+  border: 2px dashed #ccc;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.05);
+}
+
+.receipt-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.receipt-logo {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+.receipt-header h3 {
+  margin: 0;
+  color: #333;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.receipt-subtitle {
+  color: #666;
+  font-size: 0.9rem;
+  margin: 0.5rem 0 0 0;
+}
+
+.receipt-divider {
+  height: 2px;
+  background: repeating-linear-gradient(
+    90deg,
+    #ccc 0px,
+    #ccc 10px,
+    transparent 10px,
+    transparent 20px
+  );
+  margin: 1.5rem 0;
+}
+
+.receipt-section {
+  margin: 1.5rem 0;
+}
+
+.receipt-field {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: white;
+  border-radius: 8px;
+}
+
+.receipt-field label {
+  font-weight: 600;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.receipt-value {
+  font-family: 'Courier New', monospace;
+  color: #333;
+  font-weight: 600;
+}
+
+.verification-code {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+}
+
+.vote-details {
+  background: linear-gradient(135deg, #10b98120 0%, #059b6920 100%);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border-left: 4px solid #10b981;
+}
+
+.vote-details h4 {
+  margin: 0 0 1rem 0;
+  color: #333;
+  font-size: 1rem;
+}
+
+.candidate-info {
+  text-align: center;
+}
+
+.candidate-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.candidate-party {
+  font-size: 1.1rem;
+  color: #667eea;
+  font-weight: 600;
+}
+
+.qr-section {
+  text-align: center;
+}
+
+.qr-code-placeholder {
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 2rem;
+  display: inline-block;
+}
+
+.qr-icon {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+.qr-code-placeholder p {
+  margin: 0.5rem 0 0 0;
+  font-weight: 600;
+  color: #333;
+}
+
+.qr-code-placeholder small {
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.receipt-footer {
+  margin-top: 1.5rem;
+}
+
+.digital-signature {
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.digital-signature label {
+  display: block;
+  font-weight: 600;
+  color: #666;
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+}
+
+.signature-hash {
+  font-family: 'Courier New', monospace;
+  font-size: 0.75rem;
+  color: #333;
+  word-break: break-all;
+}
+
+.receipt-notice {
+  background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%);
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid #667eea;
+}
+
+.receipt-notice p {
+  margin: 0.5rem 0;
+  font-size: 0.85rem;
+  color: #333;
+}
+
+.vvpat-actions {
+  display: flex;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-top: 2px solid #e0e0e0;
+  flex-wrap: wrap;
+}
+
+.vvpat-actions .btn {
+  flex: 1;
+  min-width: 150px;
+}
+
+.vvpat-info {
+  padding: 0 1.5rem 1.5rem 1.5rem;
+}
+
+.vvpat-info p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #666;
+  line-height: 1.6;
+}
+
+.vvpat-info strong {
+  color: #333;
+}
+
+/* Print styles */
+@media print {
+  .vvpat-overlay {
+    background: white;
+  }
+
+  .vvpat-modal {
+    box-shadow: none;
+    max-height: none;
+  }
+
+  .vvpat-header,
+  .vvpat-actions,
+  .vvpat-info,
+  .close-button {
+    display: none;
+  }
+
+  .receipt-paper {
+    border: 2px solid #000;
+  }
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .vvpat-modal {
+    max-height: 95vh;
+  }
+
+  .vvpat-content {
+    padding: 1rem;
+  }
+
+  .receipt-paper {
+    padding: 1rem;
+  }
+
+  .vvpat-actions {
+    flex-direction: column;
+  }
+
+  .vvpat-actions .btn {
+    width: 100%;
+  }
+
+  .receipt-field {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .verification-code {
+    font-size: 0.9rem;
+  }
+}

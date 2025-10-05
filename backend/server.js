@@ -78,24 +78,54 @@ connectDB();
 // ROUTES
 // ======================
 
+// Import enhanced routes
+const enhancedRoutes = require('./routes/enhancedRoutes');
+
+// Import Maharashtra-specific routes
+const maharashtraAuthRoutes = require('./routes/maharashtraAuth');
+const maharashtraVoteRoutes = require('./routes/maharashtraVote');
+const maharashtraResultsRoutes = require('./routes/maharashtraResults');
+const adminRoutes = require('./routes/admin');
+
+// Mount enhanced routes (v2 API)
+app.use('/api/v2', enhancedRoutes);
+
+// Mount Maharashtra-specific routes (v3 API)
+app.use('/api/v3/auth', maharashtraAuthRoutes);
+app.use('/api/v3/vote', maharashtraVoteRoutes);
+app.use('/api/v3/results', maharashtraResultsRoutes);
+app.use('/api/v3/admin', adminRoutes);
+
 // 1. ROOT ENDPOINT
 app.get('/', (req, res) => {
     res.json({
         success: true,
         message: '🏛️ E-Voting System API',
-        version: '1.0.0',
+        version: '2.0.0',
         timestamp: new Date().toISOString(),
         environment: process.env.NODE_ENV || 'development',
         database: mongoose.connection.readyState === 1 ? 'Connected' : 'Disconnected',
+        features: [
+            'Aadhaar-based verification',
+            'AI biometric authentication',
+            'Device binding security',
+            'Blockchain vote storage',
+            'VVPAT digital audit trail',
+            'Multi-language support',
+            'WCAG 2.0 AA accessibility'
+        ],
         endpoints: {
             'GET /': 'API Welcome',
             'GET /health': 'Health Check',
-            'GET /api/info': 'System Information',
-            'GET /api/candidates': 'List Candidates',
-            'GET /api/stats': 'Voting Statistics',
-            'GET /api/auth/test': 'Authentication Test',
-            'POST /api/auth/register': 'Register Voter',
-            'POST /api/auth/login': 'Login Voter'
+            'GET /api/info': 'System Information (v1)',
+            'GET /api/v2/system/info': 'Enhanced System Info (v2)',
+            'POST /api/v2/auth/register': 'Register with Aadhaar',
+            'POST /api/v2/auth/verify-biometrics': 'Biometric Verification',
+            'POST /api/v2/auth/bind-device': 'Device Binding',
+            'POST /api/v2/auth/login': 'Multi-factor Login',
+            'POST /api/v2/votes/cast': 'Cast Vote (Blockchain + VVPAT)',
+            'GET /api/v2/votes/results': 'Election Results',
+            'GET /api/v2/i18n/languages': 'Supported Languages'
         }
     });
 });

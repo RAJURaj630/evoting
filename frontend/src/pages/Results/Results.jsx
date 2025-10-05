@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import voteService from '../../services/voteService'
+import enhancedVoteService from '../../services/enhancedVoteService'
 
 const Results = () => {
   const [results, setResults] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [useEnhancedMode, setUseEnhancedMode] = useState(true)
+  const [blockchainStatus, setBlockchainStatus] = useState(null)
 
   useEffect(() => {
     fetchResults()
@@ -15,11 +18,23 @@ const Results = () => {
 
   const fetchResults = async () => {
     try {
-      const response = await voteService.getResults()
-      if (response.success) {
-        setResults(response.data)
-        setError('')
+      let response
+      if (useEnhancedMode) {
+        response = await enhancedVoteService.getResults()
+        if (response.success) {
+          setResults(response.data)
+          setBlockchainStatus(response.data.blockchain)
+          setError('')
+        }
       } else {
+        response = await voteService.getResults()
+        if (response.success) {
+          setResults(response.data)
+          setError('')
+        }
+      }
+      
+      if (!response.success) {
         setError('Failed to load results')
       }
     } catch (error) {
@@ -80,10 +95,36 @@ const Results = () => {
           </div>
         </div>
 
+        {/* Blockchain Status */}
+        {useEnhancedMode && blockchainStatus && (
+          <div className={`blockchain-status ${blockchainStatus.valid ? 'valid' : 'invalid'}`}>
+            <div className="blockchain-icon">
+              {blockchainStatus.valid ? '✅' : '⚠️'}
+            </div>
+            <div className="blockchain-info">
+              <h3>Blockchain Validation</h3>
+              <p>{blockchainStatus.message}</p>
+              {blockchainStatus.valid && (
+                <div className="blockchain-details">
+                  <span className="detail-badge">🔗 Immutable</span>
+                  <span className="detail-badge">🔒 Encrypted</span>
+                  <span className="detail-badge">✓ Verified</span>
+                </div>
+              )}
+            </div>
+            <button 
+              className="toggle-mode-btn"
+              onClick={() => setUseEnhancedMode(!useEnhancedMode)}
+            >
+              Switch to {useEnhancedMode ? 'Standard' : 'Enhanced'} Mode
+            </button>
+          </div>
+        )}
+
         {/* Live Results Header */}
         <div className="results-section">
           <h2 className="section-title">
-            Live Results
+            {useEnhancedMode ? '🔐 Blockchain-Verified Results' : 'Live Results'}
             <span className="update-time">
               🔄 Last updated: {results?.lastUpdated ? new Date(results.lastUpdated).toLocaleTimeString() : 'Now'}
             </span>

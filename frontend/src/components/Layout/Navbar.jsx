@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
+import LanguageSelector from '../LanguageSelector/LanguageSelector'
 
 const Navbar = () => {
   const { user, logout, isAuthenticated } = useAuth()
@@ -31,6 +32,7 @@ const Navbar = () => {
           </div>
           
           <div className="navbar-auth">
+            <LanguageSelector />
             {isAuthenticated ? (
               <>
                 <span className="welcome-text">

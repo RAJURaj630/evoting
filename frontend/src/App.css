@@ -807,3 +807,207 @@ label {
     align-items: center;
   }
 }
+
+/* ===== ENHANCED FEATURES STYLES ===== */
+
+/* Enhanced Feature Cards */
+.feature-card.enhanced {
+  background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+  border-left: 4px solid #667eea;
+  transition: all 0.3s ease;
+}
+
+.feature-card.enhanced:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(102, 126, 234, 0.3);
+  border-left-color: #764ba2;
+}
+
+.enhanced-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #10b98120 0%, #059b6920 100%);
+  border-radius: 12px;
+  border-left: 4px solid #10b981;
+}
+
+.badge-icon {
+  font-size: 1.5rem;
+}
+
+.badge-text {
+  color: #059669;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+/* Blockchain Status */
+.blockchain-status {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  margin: 2rem 0;
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.blockchain-status.valid {
+  border-left: 4px solid #10b981;
+  background: linear-gradient(135deg, #10b98110 0%, #059b6910 100%);
+}
+
+.blockchain-status.invalid {
+  border-left: 4px solid #ef4444;
+  background: linear-gradient(135deg, #ef444410 0%, #dc262610 100%);
+}
+
+.blockchain-icon {
+  font-size: 3rem;
+}
+
+.blockchain-info {
+  flex: 1;
+}
+
+.blockchain-info h3 {
+  margin: 0 0 0.5rem 0;
+  color: #333;
+  font-size: 1.2rem;
+}
+
+.blockchain-info p {
+  margin: 0;
+  color: #666;
+}
+
+.blockchain-details {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.detail-badge {
+  padding: 0.4rem 0.8rem;
+  background: white;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #667eea;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.toggle-mode-btn {
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.toggle-mode-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+/* Mode Toggle in Voting */
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.mode-toggle {
+  display: flex;
+  align-items: center;
+}
+
+.toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.toggle-label input[type="checkbox"] {
+  width: 50px;
+  height: 26px;
+  appearance: none;
+  background: #ccc;
+  border-radius: 13px;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.toggle-label input[type="checkbox"]:checked {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.toggle-label input[type="checkbox"]::before {
+  content: '';
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: white;
+  top: 2px;
+  left: 2px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-label input[type="checkbox"]:checked::before {
+  left: 26px;
+}
+
+.toggle-text {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+/* Responsive for Enhanced Features */
+@media (max-width: 768px) {
+  .blockchain-status {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .toggle-mode-btn {
+    width: 100%;
+  }
+
+  .header-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .mode-toggle {
+    width: 100%;
+  }
+
+  .toggle-label {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .enhanced-badge {
+    flex-direction: column;
+    text-align: center;
+  }
+}

@@ -27,6 +27,27 @@ const voteSchema = new mongoose.Schema({
     default: Date.now,
     index: true
   },
+  electionId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Election',
+    required: [true, 'Election ID is required']
+  },
+  constituency: {
+    type: String,
+    required: [true, 'Constituency is required']
+  },
+  ipAddress: {
+    type: String,
+    required: true
+  },
+  userAgent: {
+    type: String,
+    required: true
+  },
+  deviceFingerprint: {
+    type: String,
+    required: true
+  },
   electionRound: {
     type: String,
     default: '2024-GENERAL',
@@ -37,15 +58,17 @@ const voteSchema = new mongoose.Schema({
 });
 
 // Compound indexes for efficient querying
-voteSchema.index({ voterId: 1, electionRound: 1 });
-voteSchema.index({ candidateId: 1, electionRound: 1 });
+voteSchema.index({ voterId: 1, electionId: 1 }, { unique: true });
+voteSchema.index({ candidateId: 1, electionId: 1 });
+voteSchema.index({ constituency: 1, electionId: 1 });
 voteSchema.index({ timestamp: 1 });
+voteSchema.index({ voteHash: 1 }, { unique: true });
 
 // Pre-save middleware to generate vote hash
 voteSchema.pre('save', function(next) {
   if (this.isModified('encryptedVote') || this.isNew) {
     const hash = crypto.createHash('sha256');
-    hash.update(this.encryptedVote + this.timestamp.toString() + this.voterId.toString());
+    hash.update(this.encryptedVote + this.timestamp.toString() + this.voterId.toString() + this.electionId.toString());
     this.voteHash = hash.digest('hex');
   }
   next();
